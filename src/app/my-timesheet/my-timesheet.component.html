@@ -1,0 +1,114 @@
+<div class="timesheet header ui-g-12">
+
+    <h2>
+        {{day}}
+    </h2>
+    <h3>
+        {{dateAndMonth}}
+    </h3>
+
+</div>
+
+<p-tabView class="ui-g-12 tabs" (onChange)='onChangeTab($event)'>
+    <p-tabPanel *ngFor='let tab of daysOfWeek' header={{tab}}>
+
+        <p-table #tt [value] = 'getTimesForDay(tab)' [columns]='myTimesDataCols' [paginator]="true" [reorderableColumns]="true"
+            [rows]="4" [rowsPerPageOptions] = '[2, 4, 6, 8, 10]' exportFilename='MyTimeFile' [(selection)]="selectedRow" (onRowSelect)="onRowSelect($event)"
+            [scrollable]="true" scrollHeight="400px" class="timesheet-grid"
+        >
+
+            <ng-template pTemplate="caption">
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Search" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </ng-template>
+        
+            <ng-template pTemplate="header" let-devTimeSheetData >
+        
+                <tr >
+                    <th style="width: 3em">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of myTimesDataCols" [pSortableColumn]="col" pReorderableColumn>
+                        {{col.toUpperCase()}}
+                    </th>
+                </tr>
+        
+                <tr>
+                    <th style="width: 3em"></th>
+                    <th *ngFor="let col of myTimesDataCols" [ngSwitch]="col" pReorderableColumn>
+                        <input *ngSwitchCase="col" placeholder="{{col.toUpperCase()}}..." pInputText type="text" (input)="tt.filter($event.target.value, col, 'contains')">
+                        
+                        
+                        <!-- <p-dropdown *ngSwitchCase="'project'" [options]="allProjects"  [style]="{'width':'100%'}"
+                        (onChange)="tt.filter($event.value, col, 'equals')"></p-dropdown> -->
+                    </th>
+                </tr>
+        
+            </ng-template>
+        
+            <ng-template pTemplate="body" let-rowData let-devTimeSheetData >
+                <tr [pSelectableRow]="rowData">
+                    <td style="width: 3em">
+                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of myTimesDataCols" class="ui-resizable-column" >
+                            <p *ngIf='col !== "project"'>{{devTimeSheetData[col]}}</p>
+                            <p-cellEditor *ngIf="col === 'project'">
+                                <ng-template pTemplate="input">
+                                    <!-- <p-dropdown [options]="allProjects"  [style]="{'width':'100%'}"
+                        [(ngModel)]='devTimeSheetData[col]'></p-dropdown> -->
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{devTimeSheetData[col]}}
+                                </ng-template>
+                            </p-cellEditor>
+                            
+                    </td>
+                </tr>
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <div class="ui-helper-clearfix" style="text-align: left">
+                    <button type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="tt.exportCSV()" style="margin-right: 0.5em;"></button>
+                    <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+                </div>
+            </ng-template>
+
+        </p-table>
+
+    </p-tabPanel>
+</p-tabView>
+
+<!-- <p-button lable="Add Time Entry" (click)="displayEditDialog = true">Add Time Entry</p-button> -->
+<!-- <button pButton lable="Add Time Entry" (click)="displayEditDialog = true">Add Time Entry</button> -->
+<button type="button" (click)="displayEditDialog = true" pButton icon="pi pi pi-times" label="Add Time Entry"></button>
+<p-dialog header='Create Time' [modal]='true' [(visible)]="displayEditDialog" [closable]='true' closeIcon='fa fa-times'
+    [ngSwitch]='dialogPageIndex'
+>
+    Our Time Entry goes here.
+    [use Esc to close dialogue!]
+    <p-steps [model]='dialogPages' [(activeIndex)]='dialogPageIndex' [readonly]='false'>
+
+    </p-steps>
+
+    
+    <div *ngSwitchCase="PageNames.TimePage">
+        <p-fullCalendar #fc [events]="events" [options]="options"></p-fullCalendar>
+    </div>
+    <div *ngSwitchCase="PageNames.ProjectPage">
+        Our ProjectPage goes here!
+    </div>
+    <div *ngSwitchCase="PageNames.PlacePage">
+        Our PlacePage goes here!
+    </div>
+    <div *ngSwitchCase="PageNames.PeoplePage">
+        Our PeoplePage goes here!
+    </div>
+
+    <p-footer>
+        <button pButton label='Cancel' icon='fa fa-times' (click)="cancelDialog()" class="ui-button-secondary"></button>
+        <button pButton label='Save' icon='fa fa-check' (click)="saveNewEntry()" ></button>
+
+    </p-footer>
+
+</p-dialog>

@@ -1,0 +1,38 @@
+<div class="ui-g">
+
+    <p-panel header='Hours by Project (Pie)' class="ui-g-12 ui-md-6">
+        <p-chart type = 'pie' [data] = 'hoursByProjectChartData'
+        [options] = 'chartOptions'></p-chart>
+    </p-panel>
+
+    <p-panel header='Hours by Project (Doughnut)' class="ui-g-12 ui-md-6">
+        <p-chart type = 'doughnut' [data] = 'hoursByProjectChartData'></p-chart>
+    </p-panel>
+
+</div>
+
+<div class="ui-g">
+
+    <p-panel header='Hours by Project (Pie)' class="ui-g-12 ui-md-6">
+        <p-chart type = 'line' [data] = 'hoursByProjectChartData'></p-chart>
+    </p-panel>
+
+    <p-panel header='Hours by Project (Doughnut)' class="ui-g-12 ui-md-6">
+        <p-chart type = 'bar' [data] = 'hoursByProjectChartData'></p-chart>
+    </p-panel>
+
+</div>
+
+<div class="ui-g">
+
+    <p-panel header='Hours by Project (Pie)' class="ui-g-12 ui-md-6">
+        <p-chart type = 'radar' [data] = 'hoursByProjectChartData'></p-chart>
+    </p-panel>
+
+    <p-panel header='Hours by Project (Doughnut)' class="ui-g-12 ui-md-6">
+        <p-chart type = 'bar' [data] = 'hoursByProjectChartDataMixed'
+        (onDataSelect) = 'onDataSelect($event)' #mixedChart></p-chart>
+    </p-panel>
+
+</div>
+

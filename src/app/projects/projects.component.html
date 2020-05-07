@@ -1,0 +1,96 @@
+<form [formGroup]='projectFormGrp' class="ui-g" (ngSubmit)='onSubmit()'>
+
+    <p-panel header='Add Project' class="ui-g-12">
+
+        <div class="ui-g">
+
+            <label for="projectId" class="ui-g-12 ui-md-2">Project Id*</label>
+            <p-inputMask id='projectId' formControlName="projectId" mask='aaa-999' slotChar="?"
+            placeholder="Project ID AAA-999" class="ui-g-12 ui-md-5"></p-inputMask>
+
+            <div class="ui-g-12 ui-md-5">
+
+                <app-fielderrors [form]='projectFormGrp' field='projectId' nicename='Project ID'>
+                </app-fielderrors>
+
+            </div>
+        </div>
+
+        <div class="ui-g">
+
+            <label for="projectdescription" class="ui-g-12">Project Description*</label>
+            <!-- <textarea id="projectdescription" formControlName='projectDescription'
+            rows="10" pInputTextarea class="ui-g-12"></textarea> -->
+            <p-editor id="projectdescription" formControlName='projectDescription' 
+            class="ui-g-12" [style]="{ 'height': '200px' }"></p-editor>
+            <div class="ui-g-12">
+
+                <app-fielderrors [form]='projectFormGrp' field='projectDescription' nicename='Project Description'>
+                </app-fielderrors>
+
+            </div>
+        </div>
+
+        <div class="ui-g">
+
+            <label for="projectdate" class="ui-g-12 ui-md-2">Project Kick-Off Date*</label>
+            <p-calendar icon='fa fa-calendar-plus-o' [minDate]='minProjectDate' [showIcon]='true'  id='projectdate' formControlName='projectDate'
+            class="ui-g-12 ui-md-5" dateFormat='dd/mm/yy'></p-calendar>
+            <div class="ui-g-12 ui-md-5">
+
+                <app-fielderrors [form]='projectFormGrp' field='projectDate' nicename='Project Date'>
+                </app-fielderrors>
+
+            </div>
+        </div>
+
+        <div class="ui-g">
+
+            <p-fieldset class="ui-g-12" legend='Project Type' [toggleable]='true' [collapsed]='false'>
+                <p-radioButton name='projGroupType' formControlName='projectType' label='Front End' value='F'>
+                </p-radioButton>
+                <p-radioButton name='projGroupType' formControlName='projectType' label='Back End' value='B'>
+                </p-radioButton>
+                <p-radioButton name='projGroupType' formControlName='projectType' label='Operations' value='O'>
+                </p-radioButton>
+            </p-fieldset>
+
+        </div>
+
+        <div class="ui-g">
+
+            <label for="selectdev" class="ui-g-12 ui-md-2">Select Developer's</label>
+            <!-- <p-dropdown id='selectdev' class="ui-g-12 ui-md-10" [options]='allDevs'
+            formControlName='selectedDevs' [filter]='true' ></p-dropdown> -->
+            <!-- <p-multiSelect id='selectdev' class="ui-g-12 ui-md-10" [options]='allDevs'
+            formControlName='selectedDevs' [filter]='true' defaultLabel="Select Dev's"></p-multiSelect> -->
+            <p-listbox id="selectdev" formControlName='selectedDevs' [multiple]='true' [options]='allDevs'
+            [filter]="true" [checkbox]='true' class="ui-g-12 ui-md-10" [listStyle]="{'max-height': '250px'}">
+                <ng-template let-dev pTemplate='item'>
+                    <img src="https://i.pravatar.cc/100?u={{ dev.label }}" class="avatar">
+                    <span class="devName">{{dev.value}}</span>
+                </ng-template>
+            </p-listbox>
+
+        </div>
+
+        <div class="ui-g">
+
+            <label for="projectrating" class="ui-g-12 ui-md-2">Project Rating</label>
+            <!-- <p-spinner id='projectrating' formControlName='projectRating' [min]='1'
+            [max]='5' class="ui-g12 ui-md-10"></p-spinner> -->
+
+            <!-- <p-slider id='projectrating' formControlName='projectRating' [min]='1'
+            [max]='5' class="ui-g12 ui-md-5" ></p-slider> -->
+            <p-rating class="ui-g-12 ui-md-5" id='projectrating' formControlName='projectRating'
+            [stars]='5' [cancel]='false'></p-rating>
+            <pre class="ui-g12 ui-md-5"> {{ projectFormGrp.getRawValue() | json }} </pre>
+            
+        </div>
+
+        <button pButton type="submit" [disabled]='hasFormErrors()'
+        label='Save' icon='fa fa-floppy-o'></button>
+
+    </p-panel>
+
+</form>

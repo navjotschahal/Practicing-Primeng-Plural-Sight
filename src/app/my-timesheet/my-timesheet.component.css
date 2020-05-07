@@ -1,0 +1,31 @@
+.timesheet {
+    background-color: white;
+    font-family: 'Roboto';
+}
+
+.header {
+    padding: 1em;
+    color: white;
+    background-color: rgb(62, 105, 136);
+    margin-bottom: 1em;
+}
+
+h2 {
+    font-weight: bolder;
+    font-size: xx-large;
+    display: inline;
+}
+
+h3 {
+    font-weight: lighter;
+    font-size: xx-large;
+    display: inline;
+}
+
+.tabs >>> li {
+    width: 19.8352%;
+}
+
+.timesheet-grid >>> .ui-datatable {
+    margin: 1em;
+}
